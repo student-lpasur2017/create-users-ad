@@ -1,0 +1,16 @@
+firstname;lastname;ou;email
+Billion;Stéphane;"OU=Direction,DC=openwin,DC=com";billion.stephane@openwin.com
+Tramet;Ludovic;"OU=Direction,DC=openwin,DC=com";tramet.ludovic@openwin.com
+Lignocourt;Julien;"OU=Projet,DC=openwin,DC=com";lignocourt.julien@openwin.com
+Dubois;Bernard;"OU=Projet,DC=openwin,DC=com";dubois.bernard@openwin.com
+Dumont;Philippe;"OU=Developpement,DC=openwin,DC=com";dumont.philippe@openwin.com
+Guillon;Laurent;"OU=Developpement,DC=openwin,DC=com";guillon.laurent@openwin.com
+Rivat;Patrick;"OU=Developpement,DC=openwin,DC=com";rivat.patrick@openwin.com
+Viallet;Régis;"OU='Direction Alsace',DC=openwin,DC=com";viallet.regis@openwin.com
+Huron;Claude;"OU=Commercial,DC=openwin,DC=com";huron.claude@openwin.com
+Morin;Jacques;"OU=Commercial,DC=openwin,DC=com";morin.jacques@openwin.com
+Morin;Benoît;"OU=Commercial,DC=openwin,DC=com";morin.benoit@openwin.com
+Tassin;Bénédicte;"OU=Secretariat,DC=openwin,DC=com";tassin.benedicte@openwin.com
+Limonnet;Johanna;"OU=Secretariat,DC=openwin,DC=com";limonnet.johanna@openwin.com
+Dupont;Eleonore;"OU=Secretariat,DC=openwin,DC=com";dupont.eleonore@openwin.com
+Valorin;Robert;"OU=Informatique,DC=openwin,DC=com";valorin.robert@openwin.com
