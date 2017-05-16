@@ -11,7 +11,7 @@ Foreach ($user in $users)
   $email = $user.email
 
   # Ajout des utilisateurs
-  New-ADuser -name $nom -givename $prenom -Path $ou -EmailAddress $email
+  New-ADuser -name $nom -givename $prenom -Path $ou -EmailAddress $email -WhatIf
 }
 
 echo ""
