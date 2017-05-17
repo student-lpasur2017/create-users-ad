@@ -2,29 +2,44 @@
 # Import d'un fichier csv dont le delimiteur est un " ; ". On l'importe dans une variable dont va la parcourir plus tard
 $users = import-csv -Path ".\users.csv" -delimiter ";"
 
+# Initialisation variables
+$premiereLettrePnom = ""
+ # /!\ Pour la var $pass en-dessous de ce commentaire, powershell ne valide pas le type de variable. à voir
+# $pass =$( ConvertFrom-SecureString -SecureString $(ConvertTo-SecureString "0p3nW1n" -AsPlainText -Force) -SecureKey 16) # La cmdlet "ConvertTo-SecureString" permet de convertir une chaine plaintext en system.secure et la cmdlet "ConvertFrom-SecureString" chiffre le type system.secure
+$pass = Read-Host("Saisir MDP ") -AsSecureString
+#---------- Selection du chemin OU (de l'AD) pour gerer les chemins dynamiquements ----------
+$dcVoulu= Read-Host("Quel site voulez vous ? Exemple : 'alsace' ou  'paris' ")
+#$ouPath="ou=Direction Alsace,DC="+$dcVoulu+",dc=OPENWIN,dc=COM"
+
 # Creation des OU (groupe) pour les utilisateurs
 dsadd ou "ou=Direction Alsace,DC=Alsace,dc=OPENWIN,dc=COM"
-dsadd ou "ou=Commercial,DC=Alsace,dc=OPENWIN,dc=COM"
 dsadd ou "ou=Commercial,DC=Alsace,dc=OPENWIN,dc=COM"
 dsadd ou "ou=Secretariat,DC=Alsace,dc=OPENWIN,dc=COM"
 dsadd ou "ou=Informatique,DC=Alsace,dc=OPENWIN,dc=COM"
 
+
 # Parcours le contenu du fichier dans la vars $users. La vars doit etre sous forme de tableau(?)
 Foreach ($user in $users)
 {
-  $pass = "0p3nW1n"                  # Definition du mot de passe pour l'user
   # /!\ Ne pas mettre d'accent dans les noms et prenoms /!\
   $nom = $user.firstname             # Definition du nom du user en cherchant dans la var $user et en precisant la colonne avec firstname
   $prenom = $user.lastname           # Definition du prenom du user en cherchant dans la var $user et en precisant la colonne avec lastname
   $ou = $user.ou                     # Definition de l'ou du user en cherchant dans la var $user et en precisant la colonne avec ou
   $email = $user.email               # Definition de l'email
-  # -SamAccountName                 # nom user pour se co
-  # -UserPrincipalName # $samaccount+@alsace.openwin.fr
+
+  # nom du compte de l'utilisateur
+  $premiereLettrePnom = $prenom.Substring($prenom.Length1,1)     # On recupere uniquement la premiere lettre du prenom
+  $nameCompte = ($premiereLettrePnom+$nom).ToLower() # -SamAccountName                 # nom user pour se co
+
+  # Compte utilisateur pour se connecter en utilisant -UserPrincipalName
+  $compteCo = ($nameCompte+"@"+"alsace.openwin.com").ToLower() # Rendre tout en minuscule
+
+  # Nom complet
   $nomComplet = $nom+" "+$prenom     # Definition du nom complet - Premiere lettre du prenom et nom
 
   # Ajout des utilisateurs
     # Remarque : N'ajoute pas les mdp car probleme de type de valeur
-  New-ADuser -Name $nomComplet -GivenName $nom -SurName $prenom -Path $ou -EmailAddress $email # PassThru | Enable-ADAccount (pour activer compte) # -AccountPassword $pass #-WhatIf
+  New-ADuser -Name $nomComplet -GivenName $nom -SamAccountName $nameCompte -UserPrincipalName  $compteCo -SurName $prenom -Path $ou -AccountPassword $pass -EmailAddress  $email -PassThru | Enable-ADAccount # (pour activer compte) #-WhatIf
 }
 
 echo " "
