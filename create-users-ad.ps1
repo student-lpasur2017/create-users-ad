@@ -3,11 +3,11 @@
 $users = import-csv -Path ".\users.csv" -delimiter ";"
 
 # Creation des OU (groupe) pour les utilisateurs
-dsadd ou "ou=Direction Alsace,dc=alsace,dc=OPENWIN,dc=COM"
-dsadd ou "ou=Commercial,dc=alsace,dc=OPENWIN,dc=COM"
-dsadd ou "ou=Commercial,dc=alsace,dc=OPENWIN,dc=COM"
-dsadd ou "ou=Secretariat,dc=alsace,dc=OPENWIN,dc=COM"
-dsadd ou "ou=Informatique,dc=alsace,dc=OPENWIN,dc=COM"
+dsadd ou "ou=Direction Alsace,DC=Alsace,dc=OPENWIN,dc=COM"
+dsadd ou "ou=Commercial,DC=Alsace,dc=OPENWIN,dc=COM"
+dsadd ou "ou=Commercial,DC=Alsace,dc=OPENWIN,dc=COM"
+dsadd ou "ou=Secretariat,DC=Alsace,dc=OPENWIN,dc=COM"
+dsadd ou "ou=Informatique,DC=Alsace,dc=OPENWIN,dc=COM"
 
 # Parcours le contenu du fichier dans la vars $users. La vars doit etre sous forme de tableau(?)
 Foreach ($user in $users)
@@ -18,21 +18,23 @@ Foreach ($user in $users)
   $prenom = $user.lastname           # Definition du prenom du user en cherchant dans la var $user et en precisant la colonne avec lastname
   $ou = $user.ou                     # Definition de l'ou du user en cherchant dans la var $user et en precisant la colonne avec ou
   $email = $user.email               # Definition de l'email
-  $nomComplet = $nom+" "+$prenom     # Definition du nom complet
+  # -SamAccountName                 # nom user pour se co
+  # -UserPrincipalName # $samaccount+@alsace.openwin.fr
+  $nomComplet = $nom+" "+$prenom     # Definition du nom complet - Premiere lettre du prenom et nom
 
   # Ajout des utilisateurs
     # Remarque : N'ajoute pas les mdp car probleme de type de valeur
-  New-ADuser -Name $nomComplet -GivenName $nom -SurName $prenom -Path $ou -EmailAddress $email # -AccountPassword $pass #-WhatIf
+  New-ADuser -Name $nomComplet -GivenName $nom -SurName $prenom -Path $ou -EmailAddress $email # PassThru | Enable-ADAccount (pour activer compte) # -AccountPassword $pass #-WhatIf
 }
 
-echo ""
-echo ""
-echo ""
-echo ""
-echo ""
+echo " "
+echo " "
+echo " "
+echo " "
+echo " "
 echo "Import termine !"
-echo ""
-echo ""
-echo ""
-echo ""
-echo ""
+echo " "
+echo " "
+echo " "
+echo " "
+echo " "
