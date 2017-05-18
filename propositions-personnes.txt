@@ -1,0 +1,19 @@
+#--------------------------------- JC (ancien camarade de classe) le 19/05/2017 ---------------------------------
+Import-Module ActiveDirectory
+$path = Split-Path -parent $MyInvocation.MyCommand.Definition
+$ou = "OU=ou,DC=dc,DC=lan"
+$upnsuffix = "@dc.lan"
+$logfile = $path + "\logfile.txt"
+
+Import-Csv "$path\ton.csv" | Select-Object *,
+@{Name="Name"; Expression={$_.GivenName+" "+$_.Surname}},
+@{Name="Path"; Expression={$ou}},
+@{Name="DisplayName"; Expression={$_.GivenName+" "+$_.Surname}},
+@{Name="UserPrincipalName"; Expression={$_.SamAccountName+$upnsuffix}},
+@{Name="AccountPassword"; Expression={ConvertTo-SecureString $_.Password -AsPlainText -force}},
+@{Name="AccountExpirationDate"; Expression={$_.Expire}},
+@{Name="EmailAddress"; Expression={$_.Mail}},
+@{Name="CannotChangePassword"; Expression={$True}},
+@{Name="PasswordNeverExpires"; Expression={$true}},
+@{Name="Enabled"; Expression={$true}} | New-ADUser
+#----------------------------------------------------------------------------------------------------------------
