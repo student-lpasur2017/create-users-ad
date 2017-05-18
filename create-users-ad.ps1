@@ -37,7 +37,7 @@ Foreach ($user in $users)
 
   # nom du compte de l'utilisateur
   $premiereLettrePnom = $prenom.Substring($prenom.Length1,1)     # On recupere uniquement la premiere lettre du prenom
-  $nameCompte = ($premiereLettrePnom+$nom).ToLower() # nom user pour se connecter et utilise le flag -SamAccountName et rendre tout en minuscule avec ToLower().
+  $nameCompte = ($premiereLettrePnom+"."+$nom).ToLower() # nom user pour se connecter et utilise le flag -SamAccountName et rendre tout en minuscule avec ToLower().
 
   # Compte utilisateur pour se connecter en utilisant -UserPrincipalName
   $compteCo = ($nameCompte+"@"+"alsace.openwin.com").ToLower() # Rendre tout en minuscule
